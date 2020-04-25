@@ -1,5 +1,6 @@
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 import axios from "axios";
-import { useState } from "react";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -20,8 +21,15 @@ const Signup = () => {
 
       let { data } = res;
       console.log(data);
+      toast.success(data.msg);
     } catch (error) {
-      console.log(error.response.data.errors);
+      let errors = error.response.data.errors;
+      console.log(errors);
+
+      if (errors) {
+        toast.error(error.response.data.errors[0]);
+      }
+
       console.log(error);
     }
   };

@@ -1,11 +1,11 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 const User = require("../models/User");
 
 const SignupController = async (req, res) => {
   let { name, email, password } = req.body;
 
-  let existingUser = await User.findOne(email);
+  let existingUser = await User.findOne({ email });
 
   if (!existingUser) {
     try {
@@ -33,10 +33,11 @@ const SignupController = async (req, res) => {
   }
 };
 
-const LoginController = (req, res) => {
+const LoginController = async (req, res) => {
+  let user = await User.findOne({ email: req.body.email }, "name email");
   return res
     .status(200)
-    .json({ staus: true, msg: "user successfully logged in" });
+    .json({ staus: true, msg: "user successfully logged in", user });
 };
 
 const LogoutController = (req, res) => {
@@ -44,8 +45,15 @@ const LogoutController = (req, res) => {
   res.redirect("/").status(200).json({ staus: true, msg: "user logged out" });
 };
 
+const getUserController = (req, res) => {
+  res
+    .status(200)
+    .json({ status: true, msg: "user successfully fetched", user: req.user });
+};
+
 module.exports = {
   SignupController,
   LoginController,
   LogoutController,
+  getUserController,
 };

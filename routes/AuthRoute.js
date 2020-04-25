@@ -6,6 +6,7 @@ const {
   SignupController,
   LoginController,
   LogoutController,
+  getUserController,
 } = require("../controllers/AuthController");
 
 const router = express.Router();
@@ -79,5 +80,8 @@ router.post(
 // /api/auth/logout
 // GET
 router.get("/logout", LogoutController);
+
+// /api/auth/me
+router.get("/me", getUserController);
 
 module.exports = router;

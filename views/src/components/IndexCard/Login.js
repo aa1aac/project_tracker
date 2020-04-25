@@ -1,13 +1,24 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { connect } from "react-redux";
 
-const Login = () => {
+import * as UserActions from "../../store/actions/user/user";
+
+const Login = ({ userLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const onLogin = (e) => {
+    e.preventDefault();
+
+    if (email && password) {
+      userLogin({ email, password });
+    }
+  };
 
   return (
     <div>
       <h5 className="mb-2">Login</h5>
-      <form>
+      <form onSubmit={onLogin}>
         <div className="form-group">
           <label htmlFor="email">Email address</label>
           <input
@@ -42,4 +53,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default connect(null, UserActions)(Login);
