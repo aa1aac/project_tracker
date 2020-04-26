@@ -23,7 +23,7 @@ const SignupController = async (req, res) => {
         .status(200)
         .json({ staus: true, msg: "user successfully created" });
     } catch (error) {
-      res.staus(503).json({ staus: false, msg: "some error occured" });
+      res.staus(500).json({ staus: false, msg: "some error occured" });
       console.error(error);
     }
   } else {
@@ -42,7 +42,7 @@ const LoginController = async (req, res) => {
 
 const LogoutController = (req, res) => {
   req.logout();
-  res.redirect("/").status(200).json({ staus: true, msg: "user logged out" });
+  res.redirect("/");
 };
 
 const getUserController = (req, res) => {

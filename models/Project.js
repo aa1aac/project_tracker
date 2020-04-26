@@ -6,11 +6,11 @@ const { Schema } = mongoose;
 
 const ProjectSchema = new Schema(
   {
-    _creator: { type: Schema.Types.ObjectId, required: true },
-    title: { type: Text, required: true },
-    tag: { type: Text, required: true },
-    completed: { type: Boolean, required: true },
-    description: { type: Text, required: true },
+    _creator: { type: Schema.Types.ObjectId, required: true, ref: "user" },
+    title: { type: String, required: true },
+    tag: { type: String, required: true },
+    completed: { type: Boolean, required: true, default: false },
+    description: { type: String, required: true },
     works: [{ type: Schema.Types.ObjectId, required: true, ref: "work" }],
     toBeCompleted: { type: Date, required: true },
   },

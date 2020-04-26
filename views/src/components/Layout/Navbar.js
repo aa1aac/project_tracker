@@ -1,6 +1,9 @@
 import React, { Component } from "react";
-import { Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { Navbar, Nav } from "react-bootstrap";
 import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+
+import { userLogout } from "../../store/actions/user/user";
 
 import Logo from "../../images/icon.png";
 
@@ -25,7 +28,7 @@ class NavigationBar extends Component {
               </Link>
             </li>
 
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link
                 className={
                   pathname === "/works" ? "nav-link active" : "nav-link"
@@ -34,11 +37,26 @@ class NavigationBar extends Component {
               >
                 Works{" "}
               </Link>
+            </li> */}
+
+            <li className="nav-item">
+              <Link
+                className={
+                  pathname === "/create-one" ? "nav-link active" : "nav-link"
+                }
+                to="/create-one"
+              >
+                add project{" "}
+              </Link>
             </li>
           </Nav>
           <Nav>
             <li className="nav-item">
-              <Link to="#!" className="nav-link btn btn-outline-danger">
+              <Link
+                to="/"
+                className="nav-link btn btn-outline-danger"
+                onClick={() => this.props.userLogout()}
+              >
                 Logout
               </Link>
             </li>
@@ -49,4 +67,4 @@ class NavigationBar extends Component {
   }
 }
 
-export default withRouter(NavigationBar);
+export default withRouter(connect(null, { userLogout })(NavigationBar));

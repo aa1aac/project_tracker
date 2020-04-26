@@ -57,13 +57,16 @@ router.post(
 router.post(
   "/login",
   [
-    check("email").isEmail().normalizeEmail().withMessage("email is invalid"),
+    check("email")
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("invalid email or password"),
     check("password")
       .isLength({ min: 8 })
-      .withMessage("invalid password")
+      .withMessage("invalid email or password")
       .bail()
       .matches(/\d/)
-      .withMessage("invalid Password"),
+      .withMessage("invalid email or Password"),
   ],
   (req, res, next) => {
     let results = validationResult(req).formatWith(({ msg }) => msg);

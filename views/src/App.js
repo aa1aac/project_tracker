@@ -4,6 +4,9 @@ import { ToastContainer } from "react-toastify";
 import { connect } from "react-redux";
 
 import IndexPage from "./pages/index";
+import AddProjectPage from "./pages/AddProject";
+import LoggedInIndex from "./pages/LoggedIndex";
+import ProjectPage from "./pages/Project";
 import Navbar from "./components/Layout/Navbar";
 
 import { getUser } from "./store/actions/user/user";
@@ -26,7 +29,9 @@ class App extends Component {
           <div>
             <Navbar />
             <Switch>
-              <Route path="/" component={() => <div>LoggedIn</div>} />
+              <Route path="/" exact component={LoggedInIndex} />
+              <Route path="/create-one" exact component={AddProjectPage} />
+              <Route path="/project/:id" exact component={ProjectPage} />
             </Switch>
           </div>
         ) : (

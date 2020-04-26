@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import IndexCard from "../components/IndexCard/IndexCard";
 
 import IndexImage from "../images/project.jpg";
 
 const IndexPage = () => {
+  useEffect(() => {
+    document.title = "Tracker";
+  }, []);
+
   return (
     <div>
       <div className="background">

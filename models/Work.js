@@ -5,8 +5,8 @@ const { Schema } = mongoose;
 const WorkSchema = new Schema(
   {
     _project: { type: Schema.Types.ObjectId, required: true },
-    description: { type: Text, required: true },
-    flag: { type: Text, required: true },
+    description: { type: String, required: true },
+    flag: { type: String, required: true },
     highUrgency: { type: Boolean, required: true, default: false },
   },
   { timestamps: true }

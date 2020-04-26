@@ -12,9 +12,13 @@ export const userLogin = ({ email, password }) => async (dispatch) => {
 
       dispatch({ type: USER_LOGIN, payload: res.data.user });
     } catch (error) {
-      console.log(error.response.data.errors[0]);
+      if (error.response.data.errors) {
+        console.log(error.response.data.errors[0]);
 
-      toast.error(error.response.data.errors[0]);
+        toast.error(error.response.data.errors[0]);
+      } else {
+        toast.error("invalid email or password");
+      }
     }
   }
 };

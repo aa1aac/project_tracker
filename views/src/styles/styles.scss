@@ -21,21 +21,17 @@ $green: #28a745 !default;
 $teal: #20c997 !default;
 $cyan: #17a2b8 !default;
 
-// $primary: #6200ea;
+$primary: #10106b;
 $secondary: $gray-600 !default;
-$secondary: #022002;
+// $secondary: #022002;
 $success: $green !default;
 $info: $cyan !default;
 $warning: $yellow !default;
-$danger: $red !default;
+$danger: #c00606;
 $light: $gray-100 !default;
 $dark: $gray-800 !default;
 
 @import "node_modules/bootstrap/scss/bootstrap";
-
-.container {
-  margin-top: 10vh;
-}
 
 .card {
   opacity: 0.9;
@@ -54,6 +50,46 @@ $dark: $gray-800 !default;
   height: 100%;
 }
 
-// .nav-item > .active {
-//   border-bottom: 2px solid $primary;
-// }
+.navbar {
+  border-bottom: 2px solid $primary;
+}
+
+.addProjectForm {
+  width: 60%;
+  margin: 0 auto;
+  padding: 0;
+  box-shadow: -14px 18px 16px 7px rgba(0, 0, 0, 1);
+
+  .form-group {
+    padding: 0.8rem;
+  }
+
+  h3 {
+    background-color: $primary;
+    color: $white;
+    padding: 1.3rem;
+    text-align: center;
+  }
+}
+
+.project {
+  width: 80%;
+  margin: 0 auto;
+
+  h3 {
+    background-color: $primary;
+    color: $white;
+    padding: 0.9rem;
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .addProjectForm {
+    width: 90%;
+  }
+
+  .project {
+    width: 95%;
+  }
+}

@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, user._id);
 });
 
 passport.deserializeUser(async (id, done) => {
