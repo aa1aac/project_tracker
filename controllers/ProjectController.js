@@ -39,7 +39,7 @@ const getSpecificProject = async (req, res) => {
       .status(200)
       .json({ status: true, project, msg: "project fetched" });
   } catch (error) {
-    console.error(erorr);
+    console.error(error);
     return res
       .status(500)
       .json({ status: false, errors: "some error occured" });
@@ -80,9 +80,41 @@ const removeProject = async (req, res) => {
   }
 };
 
+const editProject = async (req, res) => {
+  let { title, tag, description, toBeCompleted, completed } = req.body;
+
+  try {
+    let project = Project.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        _creator: req.user._id,
+      },
+      {
+        $set: { title, tag, description, toBeCompleted, completed },
+      },
+      { returnOriginal: false }
+    ).exec();
+
+    if (!project)
+      return res
+        .status(403)
+        .json({ errors: ["invalid request"], status: false });
+
+    console.log(project);
+
+    return res.status(200).json({ status: true, msg: "project edited" });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ status: false, errors: ["some error occured"] });
+  }
+};
+
 module.exports = {
   getProjects,
   getSpecificProject,
   addProject,
   removeProject,
+  editProject,
 };

@@ -7,6 +7,7 @@ const {
   getSpecificProject,
   addProject,
   removeProject,
+  editProject,
 } = require("../controllers/ProjectController");
 
 const router = express.Router();
@@ -32,13 +33,16 @@ router.post(
       .trim()
       .isLength({ min: 3 })
       .withMessage("title should have minimum length of 3"),
+
     check("tag").isIn(["urgent", "not urgent"]),
+
     check("description")
       .trim()
       .isLength({ min: 10, max: 200 })
       .withMessage(
         "description should have minimum 10 character and maximum 200"
       ),
+
     check("toBeCompleted").isISO8601().withMessage("invalid date"),
   ],
   (req, res, next) => {
@@ -57,5 +61,42 @@ router.post(
 // GET
 // PRIVATE
 router.get("/remove/:id", isAuth, removeProject);
+
+// /api/project/edit/:id
+// PUT
+// PRIVATE
+router.put(
+  "/edit/:id",
+  isAuth,
+  [
+    check("title")
+      .trim()
+      .isLength({ min: 3 })
+      .withMessage("title should have minimum length of 3"),
+
+    check("tag").isIn(["urgent", "not urgent"]),
+
+    check("description")
+      .trim()
+      .isLength({ min: 10, max: 200 })
+      .withMessage(
+        "description should have minimum 10 character and maximum 200"
+      ),
+
+    check("toBeCompleted").isISO8601().withMessage("invalid date"),
+
+    check("completed").isBoolean().withMessage("completed must be a boolean"),
+  ],
+  (req, res, next) => {
+    let errors = validationResult(req).formatWith(({ msg }) => msg);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ status: false, errors: errors.array() });
+    }
+
+    next();
+  },
+  editProject
+);
 
 module.exports = router;

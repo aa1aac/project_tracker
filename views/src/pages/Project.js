@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Modal, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Project = (props) => {
   const [project, setProject] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     getProject();
@@ -15,12 +16,25 @@ const Project = (props) => {
     document.title = project.title + "| Project";
   }
 
+  const onDeleteConfirm = async () => {
+    try {
+      let res = await axios.get(`/api/project/remove/${props.match.params.id}`);
+      setShowDeleteModal(false);
+      toast.info(res.data.msg);
+      console.log(res.data);
+      props.history.push("/");
+    } catch (error) {
+      console.error(error);
+      toast.error("some error occured deleting the project");
+      setShowDeleteModal(false);
+    }
+  };
+
   const OnDeletePressModal = () => {
-    const handleClose = () => setShowModal(false);
-    const handleShow = () => setShowModal(true);
+    const handleClose = () => setShowDeleteModal(false);
 
     return (
-      <Modal show={showModal} onHide={handleClose}>
+      <Modal show={showDeleteModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Delete Project</Modal.Title>
         </Modal.Header>
@@ -31,7 +45,7 @@ const Project = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="danger" onClick={handleClose}>
+          <Button variant="danger" onClick={onDeleteConfirm}>
             Yes! delete
           </Button>
         </Modal.Footer>
@@ -39,7 +53,6 @@ const Project = (props) => {
     );
   };
 
-  console.log(project);
   const getProject = async () => {
     try {
       let res = await axios.get(
@@ -80,11 +93,20 @@ const Project = (props) => {
             {" "}
             <strong>Works : </strong> {project.works.length}
           </p>
-          <button className="btn btn-primary"> Edit Project</button>{" "}
-          <button className="btn btn-danger" onClick={() => setShowModal(true)}>
+          <Link
+            to={`/projects/edit/${project._id}`}
+            className="btn btn-primary"
+          >
+            {" "}
+            Edit Project
+          </Link>{" "}
+          <button
+            className="btn btn-danger"
+            onClick={() => setShowDeleteModal(true)}
+          >
             {" "}
             Delete Project
-          </button>
+          </button>{" "}
           <button className="btn btn-primary">Add work</button>
           <OnDeletePressModal />
         </div>
