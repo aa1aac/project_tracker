@@ -4,9 +4,12 @@ import { toast } from "react-toastify";
 import { Modal, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
+import AddWork from "../components/AddWork/AddWork";
+
 const Project = (props) => {
   const [project, setProject] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [workClicked, setWorkClicked] = useState(false);
 
   useEffect(() => {
     getProject();
@@ -53,6 +56,25 @@ const Project = (props) => {
     );
   };
 
+  const addWork = async ({ flag, work }) => {
+    try {
+      const res = await axios.post(
+        `/api/project/add-work/${props.match.params.id}`,
+        {
+          flag,
+          description: work,
+        }
+      );
+
+      toast.info(res.data.msg);
+      setWorkClicked(false);
+      getProject();
+    } catch (error) {
+      console.error(error);
+      console.log(error.response.data);
+    }
+  };
+
   const getProject = async () => {
     try {
       let res = await axios.get(
@@ -64,6 +86,22 @@ const Project = (props) => {
       console.error(error);
       toast.error(error.response.data.errors[0]);
       console.log(error.response.satus);
+    }
+  };
+
+  const deleteWork = async (workId) => {
+    console.log("delete work", workId);
+
+    try {
+      let res = await axios.delete(
+        `/api/project/delete-work/${props.match.params.id}/${workId}`
+      );
+
+      toast.info(res.data.msg);
+      getProject();
+    } catch (error) {
+      console.error(error);
+      toast.error("some error occured deleting the work");
     }
   };
 
@@ -107,8 +145,34 @@ const Project = (props) => {
             {" "}
             Delete Project
           </button>{" "}
-          <button className="btn btn-primary">Add work</button>
+          <button
+            className="btn btn-primary"
+            onClick={() => setWorkClicked(!workClicked)}
+          >
+            {workClicked ? "Cancel adding work" : "add work"}{" "}
+          </button>
           <OnDeletePressModal />
+          {workClicked ? <AddWork addWork={addWork} /> : null}
+          <ul className="list-group mt-5 text-white">
+            {project.works.map((work) => {
+              return (
+                <li
+                  className="list-group-item bg-primary p-3 m-3"
+                  key={work._id}
+                >
+                  <h4>{work.description}</h4>
+                  <p className="badge badge-info"> # {work.flag} </p>
+
+                  <button
+                    className="btn btn-danger d-block"
+                    onClick={() => deleteWork(work._id)}
+                  >
+                    Delete
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       ) : null}
     </div>

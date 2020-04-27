@@ -8,6 +8,8 @@ const {
   addProject,
   removeProject,
   editProject,
+  addWork,
+  deleteWork,
 } = require("../controllers/ProjectController");
 
 const router = express.Router();
@@ -98,5 +100,31 @@ router.put(
   },
   editProject
 );
+
+// /api/project/add-work/:id
+// POST
+// PRIVATE
+router.post("/add-work/:id", isAuth, [
+  [
+    check("description")
+      .isLength({ min: 10, max: 200 })
+      .withMessage("description should be between 10 and 200 chars"),
+    check("flag").isIn(["urgent", "not urgent"]).withMessage("invalid flag"),
+  ],
+  (req, res, next) => {
+    let errors = validationResult(req).formatWith(({ msg }) => msg);
+
+    if (!errors.isEmpty())
+      return res.status(422).json({ status: false, errors: errors.array() });
+
+    next();
+  },
+  addWork,
+]);
+
+// /api/project/delete-work/:projectId/:workId
+// DELETE
+// PRIVATE
+router.delete("/delete-work/:projectId/:workId", isAuth, deleteWork);
 
 module.exports = router;
