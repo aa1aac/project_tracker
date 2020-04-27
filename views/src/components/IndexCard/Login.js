@@ -48,6 +48,13 @@ const Login = ({ userLogin }) => {
         <button type="submit" className="btn btn-primary btn-block">
           Login
         </button>
+
+        <a
+          href="http://localhost:5000/api/auth/github"
+          className="btn btn-secondary btn-block"
+        >
+          Login with Github
+        </a>
       </form>
     </div>
   );

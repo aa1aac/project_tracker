@@ -51,9 +51,14 @@ const getUserController = (req, res) => {
     .json({ status: true, msg: "user successfully fetched", user: req.user });
 };
 
+const githubLoginController = (req, res) => {
+  res.redirect("http://localhost:3000/#/");
+};
+
 module.exports = {
   SignupController,
   LoginController,
   LogoutController,
   getUserController,
+  githubLoginController,
 };

@@ -93,6 +93,13 @@ const Signup = () => {
         <button type="submit" className="btn btn-primary btn-block">
           Signup
         </button>
+
+        <a
+          href="http://localhost:5000/api/auth/github/"
+          className="btn btn-secondary btn-block"
+        >
+          Signup with Github
+        </a>
       </form>
     </div>
   );
