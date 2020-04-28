@@ -4,6 +4,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const helmet = require("helmet");
 const compression = require("compression");
+const path = require("path");
 
 const AuthRoute = require("./routes/AuthRoute");
 const ProjectRoute = require("./routes/ProjectRoute");
